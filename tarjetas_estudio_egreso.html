@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarjetas de Estudio: Proyecto de Vida y Orientación Vocacional</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+    }
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-preserve-3d {
+      transform-style: preserve-3d;
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(241, 245, 249, 0.5);
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.6);
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 116, 139, 0.8);
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- Header & Controls -->
+  <header class="w-full max-w-3xl flex flex-col items-center gap-4 text-center mt-2 mb-4">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-950/80 border border-indigo-500/30 text-indigo-300 text-xs font-semibold uppercase tracking-wider">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      Modo Repaso Activo &bull; Orden Aleatorio
+    </div>
+    <h1 class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-white via-indigo-100 to-indigo-300 bg-clip-text text-transparent">
+      Tarjetas de Preparación para el Egreso
+    </h1>
+
+    <!-- Filtros y Barajar -->
+    <div class="flex flex-wrap items-center justify-center gap-2 w-full pt-1">
+      <div class="flex items-center bg-slate-800/80 p-1 rounded-xl border border-slate-700/60 shadow-inner">
+        <button onclick="setFilter('todos')" id="btn-filtro-todos" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-indigo-600 text-white shadow-sm">Todos (21)</button>
+        <button onclick="setFilter('Eje 1')" id="btn-filtro-eje1" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition-all">Eje 1</button>
+        <button onclick="setFilter('Eje 2')" id="btn-filtro-eje2" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition-all">Eje 2</button>
+        <button onclick="setFilter('Eje 3')" id="btn-filtro-eje3" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition-all">Eje 3</button>
+      </div>
+
+      <button onclick="shuffleCurrentCards()" title="Reordenar aleatoriamente" class="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 border border-slate-700 rounded-xl text-xs font-medium transition-all shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22"/>
+          <path d="m18 2 4 4-4 4"/>
+          <path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2"/>
+          <path d="M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8"/>
+          <path d="m18 14 4 4-4 4"/>
+        </svg>
+        <span>Barajar preguntas</span>
+      </button>
+
+      <button onclick="toggleCardFlip()" title="Girar tarjeta (Barra espaciadora)" class="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 border border-slate-700 rounded-xl text-xs font-medium transition-all shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+          <path d="M3 3v5h5"/>
+          <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+          <path d="M16 21h5v-5"/>
+        </svg>
+        <span>Girar tarjeta</span>
+      </button>
+    </div>
+
+    <!-- Barra de Progreso y Contador -->
+    <div class="w-full max-w-xl flex flex-col gap-1.5 mt-1">
+      <div class="flex justify-between items-center text-xs text-slate-400">
+        <span id="card-counter" class="font-medium text-slate-300">Tarjeta 1 de 21</span>
+        <span id="learned-counter" class="text-emerald-400 font-semibold">0 aprendidas</span>
+      </div>
+      <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700/50">
+        <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full w-0 transition-all duration-300"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Flashcard Container -->
+  <main class="w-full max-w-2xl flex-1 flex flex-col items-center justify-center my-auto min-h-[420px]">
+    <div id="flashcard-scene" class="w-full h-[400px] sm:h-[390px] perspective-1000 cursor-pointer select-none" onclick="toggleCardFlip()">
+      <div id="flashcard-inner" class="relative w-full h-full duration-500 transform-style-preserve-3d transition-transform rounded-2xl shadow-2xl">
+        
+        <!-- CARA FRONTAL (PREGUNTA) -->
+        <div class="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-b from-slate-800 to-slate-850 border border-slate-700/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-xl">
+          <div class="flex items-center justify-between">
+            <span id="badge-eje" class="px-2.5 py-1 rounded-md text-[11px] font-semibold uppercase tracking-wider bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
+              Eje
+            </span>
+            <span id="tema-label" class="text-xs font-medium text-slate-400 text-right max-w-[65%] truncate">
+              Tema
+            </span>
+          </div>
+
+          <div class="my-auto py-2">
+            <div class="text-[11px] font-semibold text-indigo-400/90 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+              Pregunta
+            </div>
+            <h2 id="card-pregunta" class="text-base sm:text-lg md:text-xl font-medium text-slate-100 leading-relaxed">
+              Cargando pregunta...
+            </h2>
+          </div>
+
+          <div class="pt-3 border-t border-slate-700/60 flex items-center justify-between text-xs text-slate-400">
+            <span class="inline-flex items-center gap-1 text-slate-500">
+              <kbd class="px-1.5 py-0.5 bg-slate-900 border border-slate-700 rounded text-[10px] font-mono">Espacio</kbd> o clic para ver respuesta
+            </span>
+            <span class="text-indigo-400/80 flex items-center gap-1 text-[11px] font-medium">
+              Ver respuesta &rarr;
+            </span>
+          </div>
+        </div>
+
+        <!-- CARA POSTERIOR (RESPUESTA) -->
+        <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gradient-to-b from-slate-850 to-slate-900 border border-emerald-500/40 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-2xl">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-1 rounded-md text-[11px] font-semibold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Respuesta y Fundamento
+            </span>
+            <span id="tema-label-back" class="text-xs font-medium text-slate-400 text-right max-w-[60%] truncate">
+              Tema
+            </span>
+          </div>
+
+          <div class="my-auto overflow-y-auto max-h-[230px] pr-2 custom-scrollbar py-2">
+            <p id="card-respuesta" class="text-sm sm:text-base text-slate-200 leading-relaxed font-normal">
+              Cargando respuesta...
+            </p>
+          </div>
+
+          <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+            <span class="text-emerald-400/80 text-[11px]">Respuesta verificada</span>
+            <span class="text-slate-500 text-[11px] flex items-center gap-1">
+              &larr; Clic para volver a la pregunta
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Navegación y Acciones -->
+    <div class="flex items-center justify-between w-full mt-6 gap-3">
+      <button onclick="prevCard()" class="flex-1 py-3 px-4 bg-slate-800 hover:bg-slate-700 active:scale-98 text-slate-200 border border-slate-700/80 rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2 shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        <span>Anterior</span>
+      </button>
+
+      <button id="btn-mastered" onclick="toggleMastered(event)" class="px-4 py-3 bg-slate-800/80 hover:bg-slate-700/80 active:scale-95 text-slate-300 border border-slate-700 rounded-xl text-sm font-medium transition-all flex items-center gap-2" title="Marcar como aprendida">
+        <svg id="icon-mastered" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+        </svg>
+        <span class="hidden sm:inline">Dominada</span>
+      </button>
+
+      <button onclick="nextCard()" class="flex-1 py-3 px-4 bg-indigo-600 hover:bg-indigo-500 active:scale-98 text-white rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2 shadow-md shadow-indigo-600/20">
+        <span>Siguiente</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </main>
+
+  <!-- Atajos de Teclado Footer -->
+  <footer class="w-full max-w-2xl py-3 border-t border-slate-800/80 mt-auto flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[11px] text-slate-500">
+    <span class="flex items-center gap-1.5">
+      <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-400 font-mono text-[10px]">&larr;</kbd>
+      <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-400 font-mono text-[10px]">&rarr;</kbd>
+      Navegar
+    </span>
+    <span class="flex items-center gap-1.5">
+      <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-400 font-mono text-[10px]">Espacio</kbd>
+      Girar tarjeta
+    </span>
+    <span class="flex items-center gap-1.5">
+      <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-400 font-mono text-[10px]">M</kbd>
+      Marcar aprendida
+    </span>
+    <span class="flex items-center gap-1.5">
+      <kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-400 font-mono text-[10px]">R</kbd>
+      Barajar
+    </span>
+  </footer>
+
+  <script>
+    const database = [
+      // EJE 1
+      {
+        id: "e1_1",
+        eje: "Eje 1: Identidad y Madurez",
+        tema: "Balance de trayectoria personal y escolar",
+        pregunta: "¿De qué manera el análisis reflexivo de las fortalezas, debilidades y logros obtenidos durante la secundaria contribuye a definir los próximos pasos vocacionales o laborales?",
+        respuesta: "Permite que el estudiante realice un diagnóstico objetivo y realista de sus competencias académicas, aptitudes prácticas y áreas de mejora. Al identificar en qué áreas ha demostrado mayor solvencia y qué aspectos requiere fortalecer, el egresado fundamenta su elección de carrera o empleo en datos concretos de su propio desempeño y potencial, minimizando decisiones impulsivas o basadas únicamente en expectativas externas."
+      },
+      {
+        id: "e1_2",
+        eje: "Eje 1: Identidad y Madurez",
+        tema: "Autorregulación emocional y resiliencia",
+        pregunta: "¿Qué papel desempeña la tolerancia a la frustración y la gestión de la incertidumbre en el proceso de egreso de la Educación Media?",
+        respuesta: "La transición hacia la vida postescolar implica enfrentar situaciones fuera del control del estudiante, tales como exámenes de admisión no superados, rechazos laborales o cambios imprevistos de planes. La autorregulación emocional y la resiliencia permiten procesar estas dificultades como oportunidades de aprendizaje y reajuste en lugar de vivirlas como fracasos definitivos, sosteniendo la motivación y la perseverancia a pesar de los contratiempos."
+      },
+      {
+        id: "e1_3",
+        eje: "Eje 1: Identidad y Madurez",
+        tema: "Escala de valores y ética profesional",
+        pregunta: "¿Cómo influye la clarificación de una escala de valores personal en la prevención de dilemas éticos durante la futura actividad ciudadana y laboral?",
+        respuesta: "Establece una brújula moral interna con principios sólidos (como la honestidad, el compromiso, la justicia y el respeto) que orienta la conducta frente a presiones grupales o tentaciones de conveniencia inmediata. Al tener claros sus valores, la persona es capaz de ponderar las consecuencias de sus actos, asumir responsabilidad por sus decisiones y mantener coherencia entre sus convicciones y su práctica profesional o social."
+      },
+      {
+        id: "e1_4",
+        eje: "Eje 1: Identidad y Madurez",
+        tema: "Manejo del estrés y ansiedad de egreso",
+        pregunta: "¿Cuáles son las estrategias más efectivas para mitigar la ansiedad originada por los plazos de entrega finales y las expectativas familiares respecto al futuro?",
+        respuesta: "Las estrategias más efectivas incluyen la planificación estructurada del tiempo (desglosando tareas grandes en metas diarias medibles), la práctica de técnicas de respiración y descanso activo, y la comunicación asertiva con el entorno familiar para transparentar inquietudes reales. Esto ayuda a separar las metas y motivaciones propias de las presiones ajenas, reduciendo la sobrecarga mental durante el cierre del año lectivo."
+      },
+      {
+        id: "e1_5",
+        eje: "Eje 1: Identidad y Madurez",
+        tema: "Autonomía y responsabilidad adulta",
+        pregunta: "¿Qué implica asumir la mayoría de edad desde la perspectiva de la autonomía personal, jurídica y social?",
+        respuesta: "Implica la transición de depender de la tutela parental a responder directamente por los propios actos ante la ley y la sociedad. Significa ejercer derechos cívicos plenos, administrar el propio tiempo y recursos económicos, cumplir obligaciones legales y tributarias, y hacerse cargo de las consecuencias de las elecciones tomadas, reconociendo que la libertad individual conlleva corresponsabilidad social."
+      },
+      {
+        id: "e1_6",
+        eje: "Eje 1: Identidad y Madurez",
+        tema: "Relaciones interpersonales saludables y límites",
+        pregunta: "¿Por qué el establecimiento de límites personales claros es indispensable para construir relaciones saludables al ingresar a nuevos entornos académicos o de trabajo?",
+        respuesta: "Porque define qué conductas se aceptan y cuáles no, protegiendo la integridad física, psicológica y emocional frente a dinámicas tóxicas, abusos o sobrecargas no consentidas. Establecer límites con respeto y asertividad previene el desgaste interpersonal, fomenta el trato equitativo y genera un ambiente de colaboración basado en la confianza mutua y la claridad."
+      },
+      {
+        id: "e1_7",
+        eje: "Eje 1: Identidad y Madurez",
+        tema: "Integración del Eje (Madurez integral para el cambio)",
+        pregunta: "¿Cómo se articulan la comunicación asertiva, la resolución no violenta de conflictos y el autoconocimiento para asegurar una adaptación exitosa a la vida adulta e independiente?",
+        respuesta: "Se articulan de manera complementaria: el autoconocimiento brinda claridad sobre las propias necesidades, valores y emociones; la comunicación asertiva permite expresar posturas y desacuerdos de forma firme pero respetuosa; y las herramientas de resolución no violenta canalizan las discrepancias hacia soluciones constructivas. Esta sinergia previene escaladas de tensión, facilita el trabajo colaborativo en ambientes diversos y consolida la madurez emocional requerida en la vida ciudadana y productiva."
+      },
+
+      // EJE 2
+      {
+        id: "e2_1",
+        eje: "Eje 2: Orientación Vocacional",
+        tema: "Exploración de la oferta universitaria y técnica",
+        pregunta: "¿Cuáles son las diferencias sustanciales entre formarse en una universidad (pública o privada) y cursar estudios en un instituto técnico superior, considerando duración, enfoque y salida laboral?",
+        respuesta: "La universidad ofrece formación de grado (generalmente de 4 a 6 años) orientada a la fundamentación teórica profunda, la investigación, la gestión estratégica y el ejercicio profesional amplio. Por su parte, los institutos técnicos superiores brindan tecnicaturas de menor duración (habitualmente de 2 a 3 años) con un enfoque eminentemente práctico, procedimental y de rápida inserción laboral en sectores operativos o tecnológicos específicos que demanda el mercado inmediato."
+      },
+      {
+        id: "e2_2",
+        eje: "Eje 2: Orientación Vocacional",
+        tema: "Análisis de mallas curriculares y perfiles de egreso",
+        pregunta: "¿Por qué es fundamental que un estudiante revise detalladamente la malla curricular y el perfil de egreso antes de inscribirse a una carrera, en lugar de guiarse solo por el nombre del título?",
+        respuesta: "Porque el nombre de una carrera puede ser genérico o responder a estrategias comerciales, mientras que la malla curricular revela la carga horaria real, las áreas del conocimiento prioritarias, la correlatividad de materias y el balance entre teoría y práctica. A su vez, el perfil de egreso define con exactitud las competencias, habilidades y atribuciones legales con las que egresará el graduado, permitiendo contrastar si el plan de estudios realmente responde a sus intereses vocacionales y expectativas profesionales."
+      },
+      {
+        id: "e2_3",
+        eje: "Eje 2: Orientación Vocacional",
+        tema: "Criterios de acreditación y habilitación legal",
+        pregunta: "¿Cuál es la diferencia entre la habilitación legal de una carrera y su acreditación de calidad académica, y por qué ambas impactan directamente en el futuro del egresado?",
+        respuesta: "La habilitación legal (otorgada por los órganos rectores de educación superior, como el CONES en Paraguay) autoriza el funcionamiento de la carrera y garantiza la validez jurídica del título para ejercer legalmente en el territorio nacional. La acreditación de calidad (otorgada por agencias como la ANEAES tras una rigurosa evaluación de docentes, infraestructura e investigación) certifica que el programa cumple con estándares de excelencia académica; contar con una carrera acreditada es clave para homologar títulos en el extranjero, concursar a becas de posgrado y acceder a registros profesionales específicos."
+      },
+      {
+        id: "e2_4",
+        eje: "Eje 2: Orientación Vocacional",
+        tema: "Procesos y requisitos de admisión",
+        pregunta: "¿Qué factores debe planificar un postulante ante los cursos probatorios de ingreso (CPI/CPA) y exámenes de admisión, más allá del contenido académico?",
+        respuesta: "Debe considerar la gestión estratégica del tiempo, el desgaste psicofísico derivado de la alta competencia por cupos limitados y los costos asociados (aranceles de examen, materiales didácticos, transporte y eventual costo de institutos preparatorios o cursillos). Una adecuada planificación implica establecer un cronograma de estudio anticipado y contar con un plan de contingencia formativo en caso de no superar el proceso en la primera convocatoria."
+      },
+      {
+        id: "e2_5",
+        eje: "Eje 2: Orientación Vocacional",
+        tema: "Sistemas de financiamiento y becas",
+        pregunta: "¿Cuáles son los criterios determinantes que evalúan los programas de becas nacionales e internacionales y cómo debe prepararse un estudiante de último año para postular con éxito?",
+        respuesta: "Evalúan fundamentalmente el mérito académico (promedios generales destacados, puntajes en pruebas estandarizadas), la condición socioeconómica comprobable (declaraciones juradas, nivel de ingresos del núcleo familiar) y el compromiso social o liderazgo comunitario. Para postular con éxito, el estudiante debe compilar anticipadamente documentos legales y certificados de estudio autenticados, mantener un historial académico consistente y demostrar coherencia entre la carrera elegida y el desarrollo de su comunidad."
+      },
+      {
+        id: "e2_6",
+        eje: "Eje 2: Orientación Vocacional",
+        tema: "Modalidades de formación continua y certificaciones",
+        pregunta: "¿De qué manera las modalidades semipresenciales, a distancia y las certificaciones profesionales cortas complementan o potencian la formación superior tradicional?",
+        respuesta: "Ofrecen flexibilidad horaria y compatibilidad con el empleo temprano, permitiendo al estudiante ingresar al mundo laboral mientras sigue profesionalizándose. Además, las certificaciones técnicas y profesionales (en áreas como tecnologías de la información, idiomas, logística o gestión) dotan al perfil de competencias prácticas actualizadas y de rápida demanda que la formación académica tradicional suele demorar más en incorporar a sus planes curriculares."
+      },
+      {
+        id: "e2_7",
+        eje: "Eje 2: Orientación Vocacional",
+        tema: "Integración del Eje (Toma de decisión vocacional informada)",
+        pregunta: "¿Cómo convergen la vocación personal, el análisis de la oferta académica y la viabilidad económica en una toma de decisión vocacional realista y sostenible?",
+        respuesta: "Convergen al cruzar lo que el estudiante disfruta y sabe hacer (vocación y aptitudes) con la realidad de las opciones formativas existentes (mallas, acreditaciones e instituciones) y los recursos reales disponibles (costos de matrícula, posibilidades de financiamiento, manutención y tiempo de retorno de la inversión). La decisión vocacional madura no se basa en impulsos ni en idealizaciones, sino en un balance consciente entre aspiración personal y viabilidad práctica."
+      },
+
+      // EJE 3
+      {
+        id: "e3_1",
+        eje: "Eje 3: Inserción Laboral",
+        tema: "Estructura y enfoque del currículum vitae moderno",
+        pregunta: "¿Por qué en los procesos de selección actuales se prioriza un currículum vitae estructurado por competencias y logros verificables por encima de un listado meramente cronológico de estudios o tareas genéricas?",
+        respuesta: "Porque los reclutadores y los sistemas automatizados de filtrado (ATS) buscan evidencia concreta de lo que el postulante sabe hacer y de su capacidad para resolver problemas en contextos reales. Presentar la información mediante competencias y logros concretos demuestra iniciativa, impacto práctico y aplicación efectiva de conocimientos teóricos, lo cual resulta especialmente valioso en jóvenes egresados con poca o nula experiencia laboral formal previa."
+      },
+      {
+        id: "e3_2",
+        eje: "Eje 3: Inserción Laboral",
+        tema: "Formatos digitales y optimización de la hoja de vida",
+        pregunta: "¿Qué pautas técnicas de diseño, legibilidad y formato digital debe cumplir un CV moderno para asegurar un impacto positivo en las primeras fases de selección?",
+        respuesta: "Debe contar con una extensión ideal de una página (máximo dos si hay proyectos relevantes), tipografías limpias y profesionales sin saturación de elementos gráficos distractores, jerarquía visual clara mediante encabezados y viñetas, y estar guardado en formato PDF estándar con enlaces clicables (como correo, teléfono y perfil profesional). Asimismo, debe evitar la inclusión de datos personales sensibles o innecesarios (estado civil, dirección exacta o números de documentos de identidad no requeridos) para proteger la privacidad."
+      },
+      {
+        id: "e3_3",
+        eje: "Eje 3: Inserción Laboral",
+        tema: "Comunicación no verbal y manejo situacional en entrevistas",
+        pregunta: "¿Cómo influyen el lenguaje corporal, la preparación previa y el método STAR (Situación, Tarea, Acción, Resultado) al responder preguntas situacionales durante una entrevista de trabajo?",
+        respuesta: "El lenguaje corporal (contacto visual adecuado, postura abierta y tono de voz sereno) transmite seguridad, escucha activa y profesionalismo desde el primer contacto. Por su parte, la metodología STAR permite estructurar las respuestas ante preguntas sobre experiencias pasadas o hipotéticas de forma ordenada y concisa: contextualiza el desafío (Situación/Tarea), detalla la conducta concreta asumida (Acción) y expone el desenlace o aprendizaje cuantitativo/cualitativo obtenido (Resultado), evitando divagaciones."
+      },
+      {
+        id: "e3_4",
+        eje: "Eje 3: Inserción Laboral",
+        tema: "Tendencias del mercado laboral y perfiles híbridos",
+        pregunta: "¿Qué significa que el mercado laboral actual demande «perfiles híbridos» y por qué las competencias STEM/tecnológicas resultan transversales a disciplinas técnicas, comerciales o humanísticas?",
+        respuesta: "Un perfil híbrido es aquel que combina conocimientos técnicos específicos de una disciplina con habilidades digitales, analíticas y de gestión. En la actualidad, las competencias STEM (manejo de datos, pensamiento lógico, automatización y herramientas digitales) no son exclusivas de los ingenieros o programadores, sino herramientas transversales indispensables en áreas contables, administrativas, sanitarias, jurídicas o pedagógicas para optimizar procesos y tomar decisiones informadas."
+      },
+      {
+        id: "e3_5",
+        eje: "Eje 3: Inserción Laboral",
+        tema: "Relevancia y entrenamiento de las habilidades blandas",
+        pregunta: "Frente a la rápida obsolescencia del conocimiento técnico y la automatización, ¿por qué las habilidades blandas como el pensamiento crítico, la adaptabilidad y el trabajo en equipo son consideradas competencias clave de empleabilidad?",
+        respuesta: "Porque las herramientas y procedimientos técnicos cambian a un ritmo acelerado, mientras que las habilidades blandas permiten a la persona aprender a aprender, ajustarse a transformaciones organizacionales imprevistas y colaborar eficazmente en equipos multidisciplinarios. El pensamiento crítico permite cuestionar datos, identificar sesgos y resolver problemas complejos que la inteligencia artificial o los procesos automatizados no pueden abordar de forma autónoma."
+      },
+      {
+        id: "e3_6",
+        eje: "Eje 3: Inserción Laboral",
+        tema: "Marca personal digital y presencia en redes",
+        pregunta: "¿Qué impacto tiene la reputación digital en la empleabilidad y de qué manera plataformas como LinkedIn pueden ser aprovechadas estratégicamente por un recién egresado de la secundaria?",
+        respuesta: "La reputación digital constituye la primera referencia pública que consultan los empleadores; una huella digital descuidada o contradictoria puede descartar una postulación en etapas tempranas. Para un recién egresado, una plataforma como LinkedIn no es solo un repositorio de currículum, sino un espacio para visibilizar proyectos académicos, pasantías, voluntariados, certificaciones y generar redes de contacto (networking) con profesionales del sector de su interés."
+      },
+      {
+        id: "e3_7",
+        eje: "Eje 3: Inserción Laboral",
+        tema: "Integración del Eje (Del aula al primer empleo)",
+        pregunta: "¿Cómo se articula el dominio de herramientas colaborativas digitales con la capacidad de resolución de problemas para lograr una transición exitosa hacia ambientes de trabajo híbridos o presenciales?",
+        respuesta: "Se articula al convertir la tecnología en un medio eficiente para la acción productiva: saber operar procesadores en la nube, gestores de tareas y canales de mensajería profesional no basta si no se acompaña de claridad para definir prioridades, proponer soluciones concretas y coordinar esfuerzos con otros. Esta integración demuestra madurez laboral, reduciendo los tiempos de inducción y proyectando a un colaborador autónomo, confiable y con capacidad de respuesta en entornos dinámicos."
+      }
+    ];
+
+    // Función de barajado Fisher-Yates
+    function shuffleArray(array) {
+      const copy = [...array];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    // Estado de la app
+    let currentFilter = 'todos';
+    let cards = shuffleArray(database); // Inicia aleatorizado
+    let currentIndex = 0;
+    let isFlipped = false;
+    let masteredIds = new Set();
+
+    // Elementos del DOM
+    const flashcardInner = document.getElementById('flashcard-inner');
+    const badgeEje = document.getElementById('badge-eje');
+    const temaLabel = document.getElementById('tema-label');
+    const temaLabelBack = document.getElementById('tema-label-back');
+    const cardPregunta = document.getElementById('card-pregunta');
+    const cardRespuesta = document.getElementById('card-respuesta');
+    const cardCounter = document.getElementById('card-counter');
+    const learnedCounter = document.getElementById('learned-counter');
+    const progressBar = document.getElementById('progress-bar');
+    const btnMastered = document.getElementById('btn-mastered');
+    const iconMastered = document.getElementById('icon-mastered');
+
+    function renderCard() {
+      if (cards.length === 0) return;
+
+      const card = cards[currentIndex];
+
+      // Regresar la tarjeta al frente si está dada vuelta
+      if (isFlipped) {
+        flashcardInner.classList.remove('rotate-y-180');
+        isFlipped = false;
+      }
+
+      setTimeout(() => {
+        badgeEje.textContent = card.eje.split(':')[0];
+        temaLabel.textContent = card.tema;
+        temaLabelBack.textContent = card.tema;
+        cardPregunta.textContent = card.pregunta;
+        cardRespuesta.textContent = card.respuesta;
+
+        // Contador y progreso
+        cardCounter.textContent = `Tarjeta ${currentIndex + 1} de ${cards.length}`;
+        const percent = ((currentIndex + 1) / cards.length) * 100;
+        progressBar.style.width = `${percent}%`;
+
+        // Estado de "Dominada"
+        const isMastered = masteredIds.has(card.id);
+        if (isMastered) {
+          iconMastered.classList.remove('text-slate-500');
+          iconMastered.classList.add('text-emerald-400', 'fill-emerald-400/30');
+          btnMastered.classList.add('border-emerald-500/40', 'bg-emerald-950/20');
+        } else {
+          iconMastered.classList.remove('text-emerald-400', 'fill-emerald-400/30');
+          iconMastered.classList.add('text-slate-500');
+          btnMastered.classList.remove('border-emerald-500/40', 'bg-emerald-950/20');
+        }
+
+        learnedCounter.textContent = `${masteredIds.size} dominadas`;
+      }, 100);
+    }
+
+    function toggleCardFlip() {
+      isFlipped = !isFlipped;
+      if (isFlipped) {
+        flashcardInner.classList.add('rotate-y-180');
+      } else {
+        flashcardInner.classList.remove('rotate-y-180');
+      }
+    }
+
+    function nextCard() {
+      if (currentIndex < cards.length - 1) {
+        currentIndex++;
+      } else {
+        currentIndex = 0; // Círculo continuo
+      }
+      renderCard();
+    }
+
+    function prevCard() {
+      if (currentIndex > 0) {
+        currentIndex--;
+      } else {
+        currentIndex = cards.length - 1;
+      }
+      renderCard();
+    }
+
+    function toggleMastered(e) {
+      if (e) e.stopPropagation();
+      const currentCard = cards[currentIndex];
+      if (masteredIds.has(currentCard.id)) {
+        masteredIds.delete(currentCard.id);
+      } else {
+        masteredIds.add(currentCard.id);
+      }
+      renderCard();
+    }
+
+    function shuffleCurrentCards() {
+      cards = shuffleArray(cards);
+      currentIndex = 0;
+      renderCard();
+    }
+
+    function setFilter(filter) {
+      currentFilter = filter;
+      
+      // Actualizar estilo botones
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('bg-indigo-600', 'text-white');
+        btn.classList.add('text-slate-400');
+      });
+
+      if (filter === 'todos') {
+        cards = shuffleArray(database);
+        document.getElementById('btn-filtro-todos').classList.add('bg-indigo-600', 'text-white');
+        document.getElementById('btn-filtro-todos').classList.remove('text-slate-400');
+      } else {
+        const filtered = database.filter(c => c.eje.startsWith(filter));
+        cards = shuffleArray(filtered);
+        const btnId = filter === 'Eje 1' ? 'btn-filtro-eje1' : (filter === 'Eje 2' ? 'btn-filtro-eje2' : 'btn-filtro-eje3');
+        document.getElementById(btnId).classList.add('bg-indigo-600', 'text-white');
+        document.getElementById(btnId).classList.remove('text-slate-400');
+      }
+
+      currentIndex = 0;
+      renderCard();
+    }
+
+    // Soporte de Atajos de Teclado
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        toggleCardFlip();
+      } else if (e.code === 'ArrowRight') {
+        e.preventDefault();
+        nextCard();
+      } else if (e.code === 'ArrowLeft') {
+        e.preventDefault();
+        prevCard();
+      } else if (e.key === 'm' || e.key === 'M') {
+        toggleMastered();
+      } else if (e.key === 'r' || e.key === 'R') {
+        shuffleCurrentCards();
+      }
+    });
+
+    // Iniciar con orden aleatorio al cargar
+    renderCard();
+  </script>
+</body>
+</html>
