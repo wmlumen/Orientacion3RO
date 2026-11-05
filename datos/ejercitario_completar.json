@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "eje": "Eje 1: Identidad y Madurez",
+    "tema": "Autoconocimiento",
+    "enunciado": "El proceso reflexivo por el cual una persona adquiere noción clara de sus características, valores, intereses y aptitudes se denomina ______________.",
+    "respuesta": "autoconocimiento",
+    "aceptadas": ["autoconocimiento", "conocimiento de sí mismo", "autoconciencia"],
+    "fundamento": "El autoconocimiento es la base del diagnóstico personal para decidir vocación."
+  },
+  {
+    "id": 2,
+    "eje": "Eje 1: Identidad y Madurez",
+    "tema": "Matriz FODA",
+    "enunciado": "La matriz estratégica de autorreflexión que analiza Factores internos (Fortalezas y Debilidades) y Factores externos (Oportunidades y ______________).",
+    "respuesta": "Amenazas",
+    "aceptadas": ["amenazas", "amenaza"],
+    "fundamento": "FODA: Fortalezas, Oportunidades, Debilidades y Amenazas."
+  },
+  {
+    "id": 3,
+    "eje": "Eje 1: Identidad y Madurez",
+    "tema": "Resiliencia",
+    "enunciado": "La capacidad de sobreponerse a las dificultades, procesarlas y reajustarse manteniendo la motivación se llama ______________.",
+    "respuesta": "resiliencia",
+    "aceptadas": ["resiliencia", "resistencia", "fortaleza emocional"],
+    "fundamento": "La resiliencia sostiene la perseverancia ante contratiempos."
+  },
+  {
+    "id": 4,
+    "eje": "Eje 1: Identidad y Madurez",
+    "tema": "Asertividad",
+    "enunciado": "Expresar posturas y desacuerdos de forma firme pero respetuosa, escuchando al otro, es la ______________.",
+    "respuesta": "comunicación asertiva",
+    "aceptadas": ["asertividad", "comunicación asertiva"],
+    "fundamento": "La asertividad equilibra firmeza y respeto, evitando pasividad o agresión."
+  },
+  {
+    "id": 5,
+    "eje": "Eje 2: Orientación Vocacional",
+    "tema": "Sistema de educación superior",
+    "enunciado": "El órgano rector del Paraguay que autoriza y supervisa el funcionamiento de las carreras de educación superior es el ______________.",
+    "respuesta": "CONES",
+    "aceptadas": ["cones", "consejo nacional de educación superior"],
+    "fundamento": "El CONES otorga la habilitación legal de las carreras."
+  },
+  {
+    "id": 6,
+    "eje": "Eje 2: Orientación Vocacional",
+    "tema": "Acreditación",
+    "enunciado": "La Agencia Nacional de Evaluación y Acreditación de la Educación Superior se conoce como ______________.",
+    "respuesta": "ANEAES",
+    "aceptadas": ["aneaes", "agencia nacional de evaluación y acreditación de la educación superior"],
+    "fundamento": "La ANEAES certifica la calidad académica de las carreras e instituciones."
+  },
+  {
+    "id": 7,
+    "eje": "Eje 2: Orientación Vocacional",
+    "tema": "Formación continua",
+    "enunciado": "Los cursos de rápida inserción laboral que brinda gratuitamente el Servicio Nacional de Promoción Profesional se conocen como ______________.",
+    "respuesta": "SNPP",
+    "aceptadas": ["snpp", "servicio nacional de promoción profesional"],
+    "fundamento": "El SNPP ofrece formación técnica y oficios de inserción rápida."
+  },
+  {
+    "id": 8,
+    "eje": "Eje 3: Inserción Laboral",
+    "tema": "Método STAR",
+    "enunciado": "El método que estructura respuestas en Situación, Tarea, Acción y ______________.",
+    "respuesta": "Resultado",
+    "aceptadas": ["resultado", "resultados"],
+    "fundamento": "STAR: Situation, Task, Action, Result."
+  },
+  {
+    "id": 9,
+    "eje": "Eje 3: Inserción Laboral",
+    "tema": "Currículum vitae",
+    "enunciado": "El documento de presentación formal que sintetiza la trayectoria formativa y personal del postulante es el ______________.",
+    "respuesta": "currículum vitae",
+    "aceptadas": ["curriculum vitae", "currículum", "cv", "hoja de vida"],
+    "fundamento": "El CV resume datos personales, perfil, formación, cursos y experiencias."
+  },
+  {
+    "id": 10,
+    "eje": "Eje 3: Inserción Laboral",
+    "tema": "Marca personal",
+    "enunciado": "La percepción profesional que otros tienen sobre una persona según sus acciones y presencia pública y digital se denomina ______________.",
+    "respuesta": "marca personal",
+    "aceptadas": ["marca personal", "personal branding", "imagen profesional"],
+    "fundamento": "La marca personal influye directamente en la empleabilidad."
+  }
+]

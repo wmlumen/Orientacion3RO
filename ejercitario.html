@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ejercitario Formativo · Orientación 3.er Curso</title>
+<style>
+  :root{
+    --bg:#0f172a; --card:#1e293b; --card2:#172033; --border:#334155;
+    --indigo:#6366f1; --indigo2:#818cf8; --emerald:#34d399; --rose:#fb7185;
+    --amber:#fbbf24; --text:#e2e8f0; --muted:#94a3b8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:1.5rem 1rem 3rem}
+  .wrap{width:100%;max-width:820px;margin:0 auto}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.25rem}
+  .top h1{font-size:1.1rem;font-weight:600;color:#fff}
+  .top a{color:var(--indigo2);text-decoration:none;font-size:.8rem;border:1px solid var(--border);padding:.4rem .8rem;border-radius:.5rem;background:var(--card)}
+  .top a:hover{border-color:var(--indigo)}
+  .hero{margin-bottom:1.5rem}
+  .badge{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .85rem;border-radius:9999px;background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.3);color:var(--indigo2);font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.9rem}
+  .badge::before{content:'';width:.5rem;height:.5rem;border-radius:50%;background:var(--emerald);box-shadow:0 0 0 3px rgba(52,211,153,.2)}
+  .hero h2{font-size:clamp(1.5rem,4vw,2.1rem);font-weight:700;line-height:1.15;margin-bottom:.55rem;background:linear-gradient(120deg,#fff 20%,var(--indigo2) 90%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .hero p{color:var(--muted);font-size:.88rem;line-height:1.6}
+  .tabs{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.25rem}
+  .tab{padding:.5rem .9rem;border-radius:.6rem;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:.8rem;cursor:pointer;font-family:inherit;transition:all .15s ease}
+  .tab:hover{color:#fff;border-color:var(--indigo)}
+  .tab.active{background:var(--indigo);border-color:var(--indigo);color:#fff;font-weight:600}
+  .panel{display:none}
+  .panel.active{display:block}
+  .q{background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border);border-radius:.75rem;margin-bottom:.8rem;padding:1rem 1.1rem}
+  .q-head{display:flex;gap:.8rem;margin-bottom:.7rem}
+  .q-num{flex-shrink:0;width:1.6rem;height:1.6rem;border-radius:.45rem;display:flex;align-items:center;justify-content:center;background:rgba(99,102,241,.15);color:var(--indigo2);font-size:.72rem;font-weight:700}
+  .q-eje{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--indigo2);margin-bottom:.2rem}
+  .q-text{font-size:.92rem;line-height:1.55;color:#f1f5f9}
+  .opts{display:flex;flex-direction:column;gap:.45rem;margin:.6rem 0 .8rem}
+  .opt{display:flex;align-items:flex-start;gap:.6rem;padding:.6rem .75rem;border:1px solid var(--border);border-radius:.55rem;background:rgba(15,23,42,.4);cursor:pointer;font-size:.85rem;line-height:1.45;transition:all .12s ease}
+  .opt:hover{border-color:rgba(99,102,241,.5);background:rgba(99,102,241,.08)}
+  .opt-key{flex-shrink:0;width:1.25rem;height:1.25rem;border-radius:.35rem;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;color:var(--muted)}
+  .opt.sel{border-color:var(--indigo);background:rgba(99,102,241,.14)}
+  .opt.sel .opt-key{background:var(--indigo);border-color:var(--indigo);color:#fff}
+  .opt.ok{border-color:var(--emerald);background:rgba(52,211,153,.12)}
+  .opt.ok .opt-key{background:var(--emerald);border-color:var(--emerald);color:#064e3b}
+  .opt.bad{border-color:var(--rose);background:rgba(251,113,133,.12)}
+  .opt.bad .opt-key{background:var(--rose);border-color:var(--rose);color:#fff}
+  .vf{display:flex;gap:.5rem;margin:.6rem 0 .8rem}
+  .vf button{flex:1;padding:.65rem .5rem;border-radius:.55rem;border:1px solid var(--border);background:rgba(15,23,42,.4);color:var(--muted);font-size:.83rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .12s ease}
+  .vf button:hover{border-color:rgba(99,102,241,.5);color:#fff}
+  .vf button.sel[data-v="true"]{border-color:var(--emerald);background:rgba(52,211,153,.14);color:var(--emerald)}
+  .vf button.sel[data-v="false"]{border-color:var(--rose);background:rgba(251,113,133,.14);color:var(--rose)}
+  .vf button.ok[data-v="true"]{border-color:var(--emerald);background:rgba(52,211,153,.18);color:var(--emerald)}
+  .vf button.ok[data-v="false"]{border-color:var(--rose);background:rgba(251,113,133,.18);color:var(--rose)}
+  .fill{display:flex;gap:.5rem;margin:.6rem 0 .8rem;align-items:center;flex-wrap:wrap}
+  .fill input{flex:1;min-width:180px;padding:.6rem .75rem;border-radius:.55rem;border:1px solid var(--border);background:rgba(15,23,42,.4);color:var(--text);font-size:.88rem;font-family:inherit;outline:none}
+  .fill input:focus{border-color:var(--indigo)}
+  .fill button{padding:.6rem .9rem;border-radius:.55rem;border:1px solid var(--indigo);background:var(--indigo);color:#fff;font-size:.8rem;font-weight:600;cursor:pointer;font-family:inherit}
+  .fill button:hover{background:#4f46e5}
+  .fill .res{font-size:.78rem;font-weight:600}
+  .fill .res.ok{color:var(--emerald)}
+  .fill .res.bad{color:var(--rose)}
+  .fund{display:none;margin-top:.6rem;padding:.6rem .75rem;border-left:3px solid var(--indigo);background:rgba(99,102,241,.07);border-radius:0 .45rem .45rem 0;font-size:.78rem;line-height:1.55;color:#cbd5e1}
+  .q.done .fund{display:block}
+  .actions{position:sticky;bottom:0;z-index:20;background:rgba(15,23,42,.92);backdrop-filter:blur(8px);padding:.85rem 0;border-top:1px solid var(--border);margin-top:1.5rem;display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+  .actions button{padding:.55rem .95rem;border-radius:.6rem;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:.8rem;cursor:pointer;font-family:inherit;font-weight:600;transition:all .15s ease}
+  .actions button:hover{color:#fff;border-color:var(--indigo)}
+  .actions button.primary{background:var(--indigo);border-color:var(--indigo);color:#fff}
+  .actions button.primary:hover{background:#4f46e5}
+  .score{margin-left:auto;font-size:.8rem;color:var(--muted)}
+  .score strong{color:var(--emerald);font-size:1rem}
+  .footer{margin-top:2.5rem;padding-top:1.25rem;border-top:1px solid var(--border);font-size:.75rem;color:var(--muted);text-align:center;line-height:1.7}
+  .footer strong{color:var(--text)}
+  @media(max-width:520px){.q{padding:.85rem .9rem}.vf button{padding:.6rem .3rem;font-size:.78rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>Orientación Educacional y Sociolaboral</h1>
+    <a href="index.html">&larr; Volver al inicio</a>
+  </div>
+
+  <div class="hero">
+    <span class="badge">Uso formativo · Corrección automática</span>
+    <h2>Ejercitario Formativo</h2>
+    <p>50 ejercicios sobre las 21 tarjetas de estudio: 10 de selección múltiple, 30 de verdadero o falso y 10 de completar palabra. Al finalizar podés ver el puntaje total.</p>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-p="sm">Selección múltiple (10)</button>
+    <button class="tab" data-p="vf">Verdadero / Falso (30)</button>
+    <button class="tab" data-p="co">Completar palabra (10)</button>
+  </div>
+
+  <main>
+    <section class="panel active" id="panel-sm"></section>
+    <section class="panel" id="panel-vf"></section>
+    <section class="panel" id="panel-co"></section>
+  </main>
+
+  <div class="actions">
+    <button class="primary" id="btn-evaluar">Evaluar respuestas</button>
+    <button id="btn-reiniciar">Reiniciar</button>
+    <span class="score" id="score">Sin evaluar</span>
+  </div>
+
+  <div class="footer">
+    <strong>Ministerio de Educación y Ciencias (MEC)</strong> · República del Paraguay<br>
+    Colegio Nacional Don Jorge Gayoso · 3.er Curso de la Educación Media · Año lectivo 2026 · Uso formativo
+  </div>
+</div>
+
+<script>
+const DATOS = {
+  sm: [{"id": 1, "eje": "Eje 1: Identidad y Madurez", "tema": "Balance de trayectoria personal y escolar", "pregunta": "¿Cuál es el aporte principal del análisis reflexivo de fortalezas, debilidades y logros durante la secundaria?", "opciones": ["Fundamentar la elección vocacional en datos concretos del propio desempeño", "Cumplir con un requisito administrativo del colegio", "Demostrar superioridad sobre los compañeros", "Evitar rendir exámenes de admisión"], "correcta": 0, "fundamento": "El diagnóstico objetivo de las competencias y áreas de mejora permite elegir carrera o empleo con base en el desempeño real, minimizando decisiones impulsivas."}, {"id": 2, "eje": "Eje 1: Identidad y Madurez", "tema": "Autorregulación emocional y resiliencia", "pregunta": "Ante un examen de admisión no superado, la resiliencia principalmente permite:", "opciones": ["Procesar la dificultad como oportunidad de aprendizaje y reajuste", "Evitar volver a postularse a ninguna carrera", "Culpar a los docentes del resultado obtenido", "Ocultar el resultado a la familia"], "correcta": 0, "fundamento": "La autorregulación emocional y la resiliencia sostienen la motivación y la perseverancia ante contratiempos, sin vivirlos como fracasos definitivos."}, {"id": 3, "eje": "Eje 1: Identidad y Madurez", "tema": "Autonomía y responsabilidad adulta", "pregunta": "Asumir la mayoría de edad implica principalmente:", "opciones": ["Responder directamente por los propios actos ante la ley y la sociedad", "Recibir mensualmente una asignación familiar", "Elegir carrera sin consultar a nadie", "No rendir cuentas a los padres"], "correcta": 0, "fundamento": "La autonomía adulta ejerce derechos cívicos plenos, administra tiempo y recursos, y asume las consecuencias de las elecciones con corresponsabilidad social."}, {"id": 4, "eje": "Eje 2: Orientación Vocacional", "tema": "Exploración de la oferta universitaria y técnica", "pregunta": "La diferencia sustancial entre universidad e instituto técnico superior es que:", "opciones": ["La universidad profundiza teoría e investigación; el instituto se enfoca en práctica de rápida inserción", "El instituto otorga títulos de grado y la universidad no", "La universidad dura 2 años y el instituto 6 años", "El instituto es gratuito y la universidad no"], "correcta": 0, "fundamento": "La universidad brinda fundamentación teórica y formación amplia; los institutos técnicos ofrecen tecnicaturas cortas con inserción laboral rápida."}, {"id": 5, "eje": "Eje 2: Orientación Vocacional", "tema": "Criterios de acreditación y habilitación legal", "pregunta": "La habilitación legal de una carrera, otorgada por el CONES, garantiza:", "opciones": ["La validez jurídica del título para ejercer legalmente en el país", "Que la carrera sea gratuita para los estudiantes", "El acceso automático a becas de posgrado", "La exención de exámenes de admisión"], "correcta": 0, "fundamento": "El CONES autoriza el funcionamiento de la carrera y la validez jurídica del título; la acreditación ANEAES certifica calidad académica."}, {"id": 6, "eje": "Eje 2: Orientación Vocacional", "tema": "Sistemas de financiamiento y becas", "pregunta": "Los programas de becas evalúan fundamentalmente:", "opciones": ["Mérito académico, condición socioeconómica y compromiso social", "Solo el apellido y los contactos familiares", "Únicamente la edad del postulante", "El lugar de residencia, sin otros criterios"], "correcta": 0, "fundamento": "Las becas consideran el mérito académico, la situación socioeconómica comprobable y el compromiso con la comunidad."}, {"id": 7, "eje": "Eje 3: Inserción Laboral", "tema": "Estructura y enfoque del currículum vitae moderno", "pregunta": "El CV actual se prioriza estructurado por:", "opciones": ["Competencias y logros verificables", "Listado cronológico de estudios", "Fotografías y datos familiares", "Referencias políticas"], "correcta": 0, "fundamento": "Los reclutadores y los sistemas ATS buscan evidencia concreta de capacidades; las competencias y logros demuestran impacto práctico."}, {"id": 8, "eje": "Eje 3: Inserción Laboral", "tema": "Comunicación no verbal y manejo situacional en entrevistas", "pregunta": "El método STAR estructura las respuestas en:", "opciones": ["Situación, Tarea, Acción y Resultado", "Saludo, Título, Argumento y Retiro", "Síntesis, Tesis, Antítesis y Resumen", "Sujeto, Verbo, Predicado y Complemento"], "correcta": 0, "fundamento": "STAR permite responder de forma ordenada: contextualiza el desafío, detalla la conducta asumida y expone el resultado o aprendizaje obtenido."}, {"id": 9, "eje": "Eje 3: Inserción Laboral", "tema": "Tendencias del mercado laboral y perfiles híbridos", "pregunta": "Un perfil híbrido es aquel que combina:", "opciones": ["Conocimientos técnicos específicos con habilidades digitales, analíticas y de gestión", "Solo titulaciones universitarias tradicionales", "Exclusivamente experiencia laboral de 10 años", "Idiomas sin ninguna base técnica"], "correcta": 0, "fundamento": "Las competencias STEM y digitales son transversales a disciplinas contables, administrativas, sanitarias, jurídicas y pedagógicas."}, {"id": 10, "eje": "Eje 3: Inserción Laboral", "tema": "Marca personal digital y presencia en redes", "pregunta": "Para un recién egresado, LinkedIn aprovechado estratégicamente sirve para:", "opciones": ["Visibilizar proyectos, certificaciones y generar redes de contacto", "Publicar solo fotografías personales", "Reclamar a empleadores en público", "Copiar el CV de otros profesionales"], "correcta": 0, "fundamento": "La reputación digital es la primera referencia que consultan los empleadores; LinkedIn permite mostrar logros y construir networking."}],
+  vf: [{"id": 1, "eje": "Eje 1: Identidad y Madurez", "enunciado": "El autoconocimiento permite elegir un camino vocacional coherente con la propia identidad, evitando decisiones basadas en presiones externas.", "respuesta": true, "fundamento": "Conocer las propias características, valores e intereses evita elecciones por moda o mandato ajeno."}, {"id": 2, "eje": "Eje 1: Identidad y Madurez", "enunciado": "La resiliencia consiste en evitar por completo cualquier situación que pueda generar frustración.", "respuesta": false, "fundamento": "La resiliencia no evita la frustración, sino que permite procesarla y reajustarse ante ella."}, {"id": 3, "eje": "Eje 1: Identidad y Madurez", "enunciado": "Una escala de valores clara funciona como una brújula moral frente a presiones grupales o tentaciones de conveniencia.", "respuesta": true, "fundamento": "Los valores orientan la conducta y permiten ponderar consecuencias antes de decidir."}, {"id": 4, "eje": "Eje 1: Identidad y Madurez", "enunciado": "La planificación del tiempo es una estrategia eficaz para reducir la ansiedad ante plazos de entrega finales.", "respuesta": true, "fundamento": "Desglosar tareas grandes en metas diarias medibles reduce la sobrecarga mental."}, {"id": 5, "eje": "Eje 1: Identidad y Madurez", "enunciado": "Establecer límites personales claros favorece relaciones saludables y previene dinámicas tóxicas o sobrecargas.", "respuesta": true, "fundamento": "Los límites protegen la integridad física, psicológica y emocional."}, {"id": 6, "eje": "Eje 1: Identidad y Madurez", "enunciado": "La comunicación asertiva consiste en imponer la propia postura sin escuchar a los demás.", "respuesta": false, "fundamento": "La asertividad expresa posturas de forma firme pero respetuosa, escuchando al otro."}, {"id": 7, "eje": "Eje 1: Identidad y Madurez", "enunciado": "La autonomía adulta implica administrar el propio tiempo y recursos y responder por las consecuencias de las elecciones.", "respuesta": true, "fundamento": "La libertad individual conlleva corresponsabilidad social ante la ley y la sociedad."}, {"id": 8, "eje": "Eje 1: Identidad y Madurez", "enunciado": "El estrés de egreso se maneja mejor ignorando las expectativas familiares por completo.", "respuesta": false, "fundamento": "La comunicación asertiva con la familia transparenta inquietudes y separa metas propias de presiones ajenas."}, {"id": 9, "eje": "Eje 1: Identidad y Madurez", "enunciado": "La autorregulación emocional ayuda a sostener la motivación y la perseverancia a pesar de los contratiempos.", "respuesta": true, "fundamento": "Procesar las dificultades como oportunidades de aprendizaje mantiene la constancia."}, {"id": 10, "eje": "Eje 1: Identidad y Madurez", "enunciado": "Las relaciones interpersonales saludables se construyen sin necesidad de acuerdos ni respeto mutuo.", "respuesta": false, "fundamento": "La claridad y el respeto mutuo son la base de la colaboración y la confianza."}, {"id": 11, "eje": "Eje 2: Orientación Vocacional", "enunciado": "Los institutos técnicos superiores ofrecen tecnicaturas de menor duración con enfoque práctico y rápida inserción laboral.", "respuesta": true, "fundamento": "Habitualmente duran de 2 a 3 años y se orientan a sectores operativos o tecnológicos."}, {"id": 12, "eje": "Eje 2: Orientación Vocacional", "enunciado": "La malla curricular es irrelevante para elegir una carrera, porque basta con el nombre del título.", "respuesta": false, "fundamento": "La malla revela carga horaria, áreas prioritarias y balance teoría-práctica; el nombre puede ser engañoso."}, {"id": 13, "eje": "Eje 2: Orientación Vocacional", "enunciado": "El perfil de egreso define las competencias y atribuciones legales con las que egresará el graduado.", "respuesta": true, "fundamento": "Permite contrastar si el plan responde a los intereses y expectativas vocacionales."}, {"id": 14, "eje": "Eje 2: Orientación Vocacional", "enunciado": "La acreditación ANEAES certifica que una carrera cumple estándares de calidad académica.", "respuesta": true, "fundamento": "La acreditación evalúa docentes, infraestructura e investigación; facilita homologaciones y becas."}, {"id": 15, "eje": "Eje 2: Orientación Vocacional", "enunciado": "Matricularse en una carrera no habilitada por el CONES impide el registro oficial del título.", "respuesta": true, "fundamento": "Sin habilitación legal, el título no tiene validez jurídica para ejercer en el país."}, {"id": 16, "eje": "Eje 2: Orientación Vocacional", "enunciado": "Los cursos probatorios de ingreso (CPI/CPA) solo requieren repasar contenidos académicos, sin planificar tiempo ni costos.", "respuesta": false, "fundamento": "También exigen gestionar tiempo, desgaste psicofísico, costos y un plan de contingencia."}, {"id": 17, "eje": "Eje 2: Orientación Vocacional", "enunciado": "Postular a becas exige compilar documentos legales y certificados de estudio con anticipación.", "respuesta": true, "fundamento": "El historial académico consistente y la coherencia con la comunidad son criterios determinantes."}, {"id": 18, "eje": "Eje 2: Orientación Vocacional", "enunciado": "Las certificaciones técnicas cortas no aportan nada a la formación superior tradicional.", "respuesta": false, "fundamento": "Dotan competencias prácticas de rápida demanda que el plan tradicional tarda en incorporar."}, {"id": 19, "eje": "Eje 2: Orientación Vocacional", "enunciado": "La decisión vocacional madura equilibra vocación personal, oferta académica y viabilidad económica.", "respuesta": true, "fundamento": "El balance consciente entre aspiración y realidad evita idealizaciones insostenibles."}, {"id": 20, "eje": "Eje 2: Orientación Vocacional", "enunciado": "Las modalidades a distancia y semipresenciales impiden compatibilizar estudio y empleo.", "respuesta": false, "fundamento": "Justamente ofrecen flexibilidad horaria para trabajar y estudiar a la vez."}, {"id": 21, "eje": "Eje 3: Inserción Laboral", "enunciado": "Los sistemas ATS priorizan CV con competencias y logros verificables sobre listados meramente cronológicos.", "respuesta": true, "fundamento": "Los reclutadores buscan evidencia concreta de lo que el postulante sabe hacer."}, {"id": 22, "eje": "Eje 3: Inserción Laboral", "enunciado": "Un CV moderno debe incluir la mayor cantidad posible de datos personales sensibles para generar confianza.", "respuesta": false, "fundamento": "Debe evitar datos innecesarios como estado civil o dirección exacta, protegiendo la privacidad."}, {"id": 23, "eje": "Eje 3: Inserción Laboral", "enunciado": "El método STAR ordena la respuesta en Situación, Tarea, Acción y Resultado.", "respuesta": true, "fundamento": "Evita divagaciones y muestra el impacto concreto de la conducta asumida."}, {"id": 24, "eje": "Eje 3: Inserción Laboral", "enunciado": "El lenguaje corporal no influye en la primera impresión de una entrevista de trabajo.", "respuesta": false, "fundamento": "Contacto visual, postura abierta y tono sereno transmiten seguridad y profesionalismo."}, {"id": 25, "eje": "Eje 3: Inserción Laboral", "enunciado": "Las competencias STEM son exclusivas de ingenieros y programadores.", "respuesta": false, "fundamento": "Son transversales a áreas contables, administrativas, sanitarias, jurídicas y pedagógicas."}, {"id": 26, "eje": "Eje 3: Inserción Laboral", "enunciado": "Las habilidades blandas permiten aprender a aprender y colaborar en equipos multidisciplinarios.", "respuesta": true, "fundamento": "Mientras lo técnico se vuelve obsoleto, la actitud y el trabajo en equipo sostienen la empleabilidad."}, {"id": 27, "eje": "Eje 3: Inserción Laboral", "enunciado": "La reputación digital puede descartar una postulación en etapas tempranas del proceso de selección.", "respuesta": true, "fundamento": "Los empleadores revisan redes; una huella descuidada o contradictoria cierra puertas."}, {"id": 28, "eje": "Eje 3: Inserción Laboral", "enunciado": "El networking solo sirve para conseguir empleo si se ofrecen favores a cambio.", "respuesta": false, "fundamento": "Se construye con vínculos de confianza, responsabilidad y comunicación honesta."}, {"id": 29, "eje": "Eje 3: Inserción Laboral", "enunciado": "Las herramientas colaborativas digitales bastan por sí solas para una inserción laboral exitosa.", "respuesta": false, "fundamento": "Deben acompañarse de claridad para priorizar, proponer soluciones y coordinar esfuerzos."}, {"id": 30, "eje": "Eje 3: Inserción Laboral", "enunciado": "El pensamiento crítico permite resolver problemas complejos que la automatización no aborda de forma autónoma.", "respuesta": true, "fundamento": "Cuestionar datos, identificar sesgos y decidir con criterio es una competencia clave."}],
+  co: [{"id": 1, "eje": "Eje 1: Identidad y Madurez", "tema": "Autoconocimiento", "enunciado": "El proceso reflexivo por el cual una persona adquiere noción clara de sus características, valores, intereses y aptitudes se denomina ______________.", "respuesta": "autoconocimiento", "aceptadas": ["autoconocimiento", "conocimiento de sí mismo", "autoconciencia"], "fundamento": "El autoconocimiento es la base del diagnóstico personal para decidir vocación."}, {"id": 2, "eje": "Eje 1: Identidad y Madurez", "tema": "Matriz FODA", "enunciado": "La matriz estratégica de autorreflexión que analiza Factores internos (Fortalezas y Debilidades) y Factores externos (Oportunidades y ______________).", "respuesta": "Amenazas", "aceptadas": ["amenazas", "amenaza"], "fundamento": "FODA: Fortalezas, Oportunidades, Debilidades y Amenazas."}, {"id": 3, "eje": "Eje 1: Identidad y Madurez", "tema": "Resiliencia", "enunciado": "La capacidad de sobreponerse a las dificultades, procesarlas y reajustarse manteniendo la motivación se llama ______________.", "respuesta": "resiliencia", "aceptadas": ["resiliencia", "resistencia", "fortaleza emocional"], "fundamento": "La resiliencia sostiene la perseverancia ante contratiempos."}, {"id": 4, "eje": "Eje 1: Identidad y Madurez", "tema": "Asertividad", "enunciado": "Expresar posturas y desacuerdos de forma firme pero respetuosa, escuchando al otro, es la ______________.", "respuesta": "comunicación asertiva", "aceptadas": ["asertividad", "comunicación asertiva"], "fundamento": "La asertividad equilibra firmeza y respeto, evitando pasividad o agresión."}, {"id": 5, "eje": "Eje 2: Orientación Vocacional", "tema": "Sistema de educación superior", "enunciado": "El órgano rector del Paraguay que autoriza y supervisa el funcionamiento de las carreras de educación superior es el ______________.", "respuesta": "CONES", "aceptadas": ["cones", "consejo nacional de educación superior"], "fundamento": "El CONES otorga la habilitación legal de las carreras."}, {"id": 6, "eje": "Eje 2: Orientación Vocacional", "tema": "Acreditación", "enunciado": "La Agencia Nacional de Evaluación y Acreditación de la Educación Superior se conoce como ______________.", "respuesta": "ANEAES", "aceptadas": ["aneaes", "agencia nacional de evaluación y acreditación de la educación superior"], "fundamento": "La ANEAES certifica la calidad académica de las carreras e instituciones."}, {"id": 7, "eje": "Eje 2: Orientación Vocacional", "tema": "Formación continua", "enunciado": "Los cursos de rápida inserción laboral que brinda gratuitamente el Servicio Nacional de Promoción Profesional se conocen como ______________.", "respuesta": "SNPP", "aceptadas": ["snpp", "servicio nacional de promoción profesional"], "fundamento": "El SNPP ofrece formación técnica y oficios de inserción rápida."}, {"id": 8, "eje": "Eje 3: Inserción Laboral", "tema": "Método STAR", "enunciado": "El método que estructura respuestas en Situación, Tarea, Acción y ______________.", "respuesta": "Resultado", "aceptadas": ["resultado", "resultados"], "fundamento": "STAR: Situation, Task, Action, Result."}, {"id": 9, "eje": "Eje 3: Inserción Laboral", "tema": "Currículum vitae", "enunciado": "El documento de presentación formal que sintetiza la trayectoria formativa y personal del postulante es el ______________.", "respuesta": "currículum vitae", "aceptadas": ["curriculum vitae", "currículum", "cv", "hoja de vida"], "fundamento": "El CV resume datos personales, perfil, formación, cursos y experiencias."}, {"id": 10, "eje": "Eje 3: Inserción Laboral", "tema": "Marca personal", "enunciado": "La percepción profesional que otros tienen sobre una persona según sus acciones y presencia pública y digital se denomina ______________.", "respuesta": "marca personal", "aceptadas": ["marca personal", "personal branding", "imagen profesional"], "fundamento": "La marca personal influye directamente en la empleabilidad."}]
+};
+const LETRAS = ['A','B','C','D'];
+const estado = { sm:{}, vf:{}, co:{} };
+
+function norm(s){
+  return (s||'').toString().toLowerCase().trim()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+
+function renderSM(){
+  const c = document.getElementById('panel-sm');
+  c.innerHTML = DATOS.sm.map(q => `
+    <div class="q" data-tipo="sm" data-id="${q.id}">
+      <div class="q-head">
+        <span class="q-num">${q.id}</span>
+        <div>
+          <div class="q-eje">${q.eje} · ${q.tema}</div>
+          <div class="q-text">${q.pregunta}</div>
+        </div>
+      </div>
+      <div class="opts">
+        ${q.opciones.map((o,i)=>`
+          <div class="opt" data-i="${i}" onclick="selSM(${q.id},${i})">
+            <span class="opt-key">${LETRAS[i]}</span>
+            <span>${o}</span>
+          </div>`).join('')}
+      </div>
+      <div class="fund"><strong>Fundamento:</strong> ${q.fundamento}</div>
+    </div>`).join('');
+}
+
+function renderVF(){
+  const c = document.getElementById('panel-vf');
+  c.innerHTML = DATOS.vf.map(q => `
+    <div class="q" data-tipo="vf" data-id="${q.id}">
+      <div class="q-head">
+        <span class="q-num">${q.id}</span>
+        <div>
+          <div class="q-eje">${q.eje}</div>
+          <div class="q-text">${q.enunciado}</div>
+        </div>
+      </div>
+      <div class="vf">
+        <button data-v="true" onclick="selVF(${q.id},true,this)">Verdadero</button>
+        <button data-v="false" onclick="selVF(${q.id},false,this)">Falso</button>
+      </div>
+      <div class="fund"><strong>Fundamento:</strong> ${q.fundamento}</div>
+    </div>`).join('');
+}
+
+function renderCO(){
+  const c = document.getElementById('panel-co');
+  c.innerHTML = DATOS.co.map(q => `
+    <div class="q" data-tipo="co" data-id="${q.id}">
+      <div class="q-head">
+        <span class="q-num">${q.id}</span>
+        <div>
+          <div class="q-eje">${q.eje} · ${q.tema}</div>
+          <div class="q-text">${q.enunciado}</div>
+        </div>
+      </div>
+      <div class="fill">
+        <input type="text" id="inp-${q.id}" placeholder="Escribí la palabra que completa" onkeydown="if(event.key==='Enter')checkCO(${q.id})">
+        <button onclick="checkCO(${q.id})">Comprobar</button>
+        <span class="res" id="res-${q.id}"></span>
+      </div>
+      <div class="fund"><strong>Respuesta:</strong> ${q.respuesta} · ${q.fundamento}</div>
+    </div>`).join('');
+}
+
+function selSM(id, i){
+  estado.sm[id] = i;
+  const q = document.querySelector(`.q[data-tipo="sm"][data-id="${id}"]`);
+  q.querySelectorAll('.opt').forEach(o => o.classList.remove('sel'));
+  q.querySelector(`.opt[data-i="${i}"]`).classList.add('sel');
+  q.classList.remove('done');
+}
+
+function selVF(id, v, btn){
+  estado.vf[id] = v;
+  const q = document.querySelector(`.q[data-tipo="vf"][data-id="${id}"]`);
+  q.querySelectorAll('.vf button').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  q.classList.remove('done');
+}
+
+function checkCO(id){
+  const q = DATOS.co.find(x => x.id === id);
+  const inp = document.getElementById('inp-'+id);
+  const res = document.getElementById('res-'+id);
+  const val = norm(inp.value);
+  const ok = val !== '' && q.aceptadas.some(a => norm(a) === val);
+  estado.co[id] = ok;
+  res.textContent = ok ? 'Correcto' : 'Incorrecto';
+  res.className = 'res ' + (ok ? 'ok' : 'bad');
+  const box = document.querySelector(`.q[data-tipo="co"][data-id="${id}"]`);
+  box.classList.toggle('done', true);
+  inp.style.borderColor = ok ? 'var(--emerald)' : 'var(--rose)';
+}
+
+function evaluar(){
+  let total = 0, max = 0;
+
+  DATOS.sm.forEach(q => {
+    const qe = document.querySelector(`.q[data-tipo="sm"][data-id="${q.id}"]`);
+    const sel = estado.sm[q.id];
+    qe.querySelectorAll('.opt').forEach(o => o.classList.remove('ok','bad','sel'));
+    if (sel === undefined){ qe.classList.remove('done'); }
+    else {
+      qe.classList.add('done');
+      const correcta = q.correcta;
+      qe.querySelector(`.opt[data-i="${correcta}"]`).classList.add('ok');
+      if (sel === correcta){ total++; qe.querySelector(`.opt[data-i="${sel}"]`).classList.add('sel'); }
+      else { qe.querySelector(`.opt[data-i="${sel}"]`).classList.add('bad'); }
+    }
+    max++;
+  });
+
+  DATOS.vf.forEach(q => {
+    const qe = document.querySelector(`.q[data-tipo="vf"][data-id="${q.id}"]`);
+    qe.querySelectorAll('.vf button').forEach(b => b.classList.remove('ok','sel'));
+    if (estado.vf[q.id] === undefined){ qe.classList.remove('done'); }
+    else {
+      qe.classList.add('done');
+      qe.querySelector(`.vf button[data-v="true"]`).classList.add(q.respuesta ? 'ok' : 'sel');
+      qe.querySelector(`.vf button[data-v="false"]`).classList.add(q.respuesta ? 'sel' : 'ok');
+      if (estado.vf[q.id] === q.respuesta) total++;
+    }
+    max++;
+  });
+
+  DATOS.co.forEach(q => { if (estado.co[q.id] === true) total++; max++; });
+
+  const pct = max ? Math.round((total/max)*100) : 0;
+  document.getElementById('score').innerHTML = `<strong>${total}</strong> de ${max} · ${pct}%`;
+}
+
+function reiniciar(){
+  estado.sm = {}; estado.vf = {}; estado.co = {};
+  document.querySelectorAll('.q').forEach(q => {
+    q.classList.remove('done');
+    q.querySelectorAll('.opt,.vf button').forEach(o => o.classList.remove('sel','ok','bad'));
+  });
+  document.querySelectorAll('.fill input').forEach(i => { i.value=''; i.style.borderColor=''; });
+  document.querySelectorAll('.fill .res').forEach(r => { r.textContent=''; r.className='res'; });
+  document.getElementById('score').textContent = 'Sin evaluar';
+}
+
+document.getElementById('btn-evaluar').addEventListener('click', evaluar);
+document.getElementById('btn-reiniciar').addEventListener('click', reiniciar);
+
+document.getElementById('tabs').addEventListener('click', e => {
+  const t = e.target.closest('.tab');
+  if (!t) return;
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  document.getElementById('panel-' + t.dataset.p).classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+renderSM(); renderVF(); renderCO();
+</script>
+</body>
+</html>

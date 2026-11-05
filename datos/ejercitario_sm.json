@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "eje": "Eje 1: Identidad y Madurez",
+    "tema": "Balance de trayectoria personal y escolar",
+    "pregunta": "¿Cuál es el aporte principal del análisis reflexivo de fortalezas, debilidades y logros durante la secundaria?",
+    "opciones": [
+      "Fundamentar la elección vocacional en datos concretos del propio desempeño",
+      "Cumplir con un requisito administrativo del colegio",
+      "Demostrar superioridad sobre los compañeros",
+      "Evitar rendir exámenes de admisión"
+    ],
+    "correcta": 0,
+    "fundamento": "El diagnóstico objetivo de las competencias y áreas de mejora permite elegir carrera o empleo con base en el desempeño real, minimizando decisiones impulsivas."
+  },
+  {
+    "id": 2,
+    "eje": "Eje 1: Identidad y Madurez",
+    "tema": "Autorregulación emocional y resiliencia",
+    "pregunta": "Ante un examen de admisión no superado, la resiliencia principalmente permite:",
+    "opciones": [
+      "Procesar la dificultad como oportunidad de aprendizaje y reajuste",
+      "Evitar volver a postularse a ninguna carrera",
+      "Culpar a los docentes del resultado obtenido",
+      "Ocultar el resultado a la familia"
+    ],
+    "correcta": 0,
+    "fundamento": "La autorregulación emocional y la resiliencia sostienen la motivación y la perseverancia ante contratiempos, sin vivirlos como fracasos definitivos."
+  },
+  {
+    "id": 3,
+    "eje": "Eje 1: Identidad y Madurez",
+    "tema": "Autonomía y responsabilidad adulta",
+    "pregunta": "Asumir la mayoría de edad implica principalmente:",
+    "opciones": [
+      "Responder directamente por los propios actos ante la ley y la sociedad",
+      "Recibir mensualmente una asignación familiar",
+      "Elegir carrera sin consultar a nadie",
+      "No rendir cuentas a los padres"
+    ],
+    "correcta": 0,
+    "fundamento": "La autonomía adulta ejerce derechos cívicos plenos, administra tiempo y recursos, y asume las consecuencias de las elecciones con corresponsabilidad social."
+  },
+  {
+    "id": 4,
+    "eje": "Eje 2: Orientación Vocacional",
+    "tema": "Exploración de la oferta universitaria y técnica",
+    "pregunta": "La diferencia sustancial entre universidad e instituto técnico superior es que:",
+    "opciones": [
+      "La universidad profundiza teoría e investigación; el instituto se enfoca en práctica de rápida inserción",
+      "El instituto otorga títulos de grado y la universidad no",
+      "La universidad dura 2 años y el instituto 6 años",
+      "El instituto es gratuito y la universidad no"
+    ],
+    "correcta": 0,
+    "fundamento": "La universidad brinda fundamentación teórica y formación amplia; los institutos técnicos ofrecen tecnicaturas cortas con inserción laboral rápida."
+  },
+  {
+    "id": 5,
+    "eje": "Eje 2: Orientación Vocacional",
+    "tema": "Criterios de acreditación y habilitación legal",
+    "pregunta": "La habilitación legal de una carrera, otorgada por el CONES, garantiza:",
+    "opciones": [
+      "La validez jurídica del título para ejercer legalmente en el país",
+      "Que la carrera sea gratuita para los estudiantes",
+      "El acceso automático a becas de posgrado",
+      "La exención de exámenes de admisión"
+    ],
+    "correcta": 0,
+    "fundamento": "El CONES autoriza el funcionamiento de la carrera y la validez jurídica del título; la acreditación ANEAES certifica calidad académica."
+  },
+  {
+    "id": 6,
+    "eje": "Eje 2: Orientación Vocacional",
+    "tema": "Sistemas de financiamiento y becas",
+    "pregunta": "Los programas de becas evalúan fundamentalmente:",
+    "opciones": [
+      "Mérito académico, condición socioeconómica y compromiso social",
+      "Solo el apellido y los contactos familiares",
+      "Únicamente la edad del postulante",
+      "El lugar de residencia, sin otros criterios"
+    ],
+    "correcta": 0,
+    "fundamento": "Las becas consideran el mérito académico, la situación socioeconómica comprobable y el compromiso con la comunidad."
+  },
+  {
+    "id": 7,
+    "eje": "Eje 3: Inserción Laboral",
+    "tema": "Estructura y enfoque del currículum vitae moderno",
+    "pregunta": "El CV actual se prioriza estructurado por:",
+    "opciones": [
+      "Competencias y logros verificables",
+      "Listado cronológico de estudios",
+      "Fotografías y datos familiares",
+      "Referencias políticas"
+    ],
+    "correcta": 0,
+    "fundamento": "Los reclutadores y los sistemas ATS buscan evidencia concreta de capacidades; las competencias y logros demuestran impacto práctico."
+  },
+  {
+    "id": 8,
+    "eje": "Eje 3: Inserción Laboral",
+    "tema": "Comunicación no verbal y manejo situacional en entrevistas",
+    "pregunta": "El método STAR estructura las respuestas en:",
+    "opciones": [
+      "Situación, Tarea, Acción y Resultado",
+      "Saludo, Título, Argumento y Retiro",
+      "Síntesis, Tesis, Antítesis y Resumen",
+      "Sujeto, Verbo, Predicado y Complemento"
+    ],
+    "correcta": 0,
+    "fundamento": "STAR permite responder de forma ordenada: contextualiza el desafío, detalla la conducta asumida y expone el resultado o aprendizaje obtenido."
+  },
+  {
+    "id": 9,
+    "eje": "Eje 3: Inserción Laboral",
+    "tema": "Tendencias del mercado laboral y perfiles híbridos",
+    "pregunta": "Un perfil híbrido es aquel que combina:",
+    "opciones": [
+      "Conocimientos técnicos específicos con habilidades digitales, analíticas y de gestión",
+      "Solo titulaciones universitarias tradicionales",
+      "Exclusivamente experiencia laboral de 10 años",
+      "Idiomas sin ninguna base técnica"
+    ],
+    "correcta": 0,
+    "fundamento": "Las competencias STEM y digitales son transversales a disciplinas contables, administrativas, sanitarias, jurídicas y pedagógicas."
+  },
+  {
+    "id": 10,
+    "eje": "Eje 3: Inserción Laboral",
+    "tema": "Marca personal digital y presencia en redes",
+    "pregunta": "Para un recién egresado, LinkedIn aprovechado estratégicamente sirve para:",
+    "opciones": [
+      "Visibilizar proyectos, certificaciones y generar redes de contacto",
+      "Publicar solo fotografías personales",
+      "Reclamar a empleadores en público",
+      "Copiar el CV de otros profesionales"
+    ],
+    "correcta": 0,
+    "fundamento": "La reputación digital es la primera referencia que consultan los empleadores; LinkedIn permite mostrar logros y construir networking."
+  }
+]

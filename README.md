@@ -1,6 +1,6 @@
 # Orientación Educacional y Sociolaboral – 3.er Curso
 
-Material de estudio para el egreso de la Educación Media y la preparación del Examen Final 2026.
+Material de estudio y práctica formativa para el egreso de la Educación Media.
 
 **Colegio Nacional Don Jorge Gayoso** · Paraguay · Año lectivo 2026
 
@@ -10,7 +10,19 @@ Material de estudio para el egreso de la Educación Media y la preparación del 
 | :--- | :--- |
 | `index.html` | Página de entrada del sitio |
 | `tarjetas_estudio_egreso.html` | 21 tarjetas interactivas de repaso (3 ejes temáticos) |
-| `cuestionario_50_preguntas.html` | Cuestionario integral de 50 preguntas con respuestas clave |
+| `ejercitario.html` | Ejercitario formativo con corrección automática (50 ejercicios) |
+| `datos/` | Datos fuente de los ejercicios (JSON) |
+
+## Ejercitario formativo
+
+50 ejercicios de uso formativo construidos sobre las 21 tarjetas de estudio:
+
+- **Selección múltiple** – 10 ejercicios con 4 opciones y fundamento.
+- **Verdadero / Falso** – 30 enunciados con fundamento.
+- **Completar palabra** – 10 frases con respuesta abierta y variantes aceptadas.
+
+Incluye corrección automática por botón **Evaluar respuestas**, puntaje total con
+porcentaje, botón **Reiniciar** y fundamento pedagógico visible al evaluar.
 
 ## Ejes temáticos
 
@@ -35,7 +47,8 @@ o visitar la dirección del sitio publicado.
 ## Requisito de conexión
 
 Las tarjetas utilizan el framework de estilos Tailwind a través de CDN y una tipografía
-de Google Fonts. Para su correcto funcionamiento visual se requiere conexión a internet.
+de Google Fonts, por lo que requieren conexión a internet para su correcto funcionamiento
+visual. El `index` y el `ejercitario` son 100% offline.
 
 ## Referencias normativas
 
